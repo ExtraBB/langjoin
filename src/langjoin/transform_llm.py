@@ -1,3 +1,30 @@
+import getpass
+import json
+import os
+from typing import List
+from langchain_openai import ChatOpenAI
+
+if not os.environ.get("OPENAI_API_KEY"):
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
+    
+llm = ChatOpenAI(
+    model="gpt-4o",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2
+)
+
+def transform_text(text: str, lang: str, word_types: List[str], strength: float) -> str:
+  messages = [
+    (
+        "system",
+        get_diglot_system_prompt(),
+    ),
+    ("human", get_diglot_user_prompt(text, lang, word_types, strength)),
+  ]
+  return llm.invoke(messages).content
+
 def get_diglot_system_prompt():
     return """
 You are a specialized linguistic assistant that transforms text using the "Diglot Weave" method. Diglot Weave stories use your students’ L1, with target vocabulary replaced with L2. This is done in a structured way, introducing new language slowly so it’s not overwhelming. It’s also done so that students can understand the meaning of the new words from context.
@@ -23,12 +50,20 @@ You will be presented with JSON input with the following schema:
       "items": {
         "type": "string",
         "enum": [   
-          "noun",
-          "verb",
           "adjective",
+          "adposition",
+          "adverb",
+          "auxiliary",
+          "conjunction",
+          "determiner",
+          "interjection",
+          "noun",
+          "numeral",
+          "particle",
           "pronoun",
-          "proposition",
-          "adverb"
+          "proper noun",
+          "subordinating conjunction",
+          "verb"
         ]
       }
     }

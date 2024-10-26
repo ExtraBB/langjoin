@@ -1,13 +1,10 @@
-from langjoin import epub
-from langjoin.replace import replace_noun_chunks
+from langjoin.transform_local import transform_text as transform_text_local
+from langjoin.transform_llm import transform_text as transform_text_llm
 
 def main() -> int:
-    replaced = replace_noun_chunks("The bear thinks about becoming a politician to make a greater impact on the world.", replace_func)
-    print(replaced)
+    text = "She got a mug from the cabinet. She set it beneath the machine’s dispenser. She opened the machine’s lid. Something began to buzz. She reached into the cabinet again. She retrieved an off-brand K-cup. The buzzing grew louder. She put the cup in the coffee maker. She closed the lid. The crunch felt violent. She selected ‘8oz’ on the little touch screen. The buzzing became a drone. She pressed the button beneath the touch screen. The machine began to whir. She could barely hear it over the droning. The floor creaked behind her. Something was watching her."
+    transformed_local = transform_text_local(text, "pt", ["verb"], 0.7)
+    transformed_llm = transform_text_llm(text, "pt", ["verb"], 0.7)
+    print("LOCAL: " + transformed_local + "\n\n")
+    print("LLM: " + transformed_llm + "\n\n")
     return 0
-
-def replace_func(input: str) -> str:
-    if(input[0].isupper()):
-        return "The man"
-    else:
-        return "the man"
