@@ -4,6 +4,6 @@ from langjoin.transformers.transform_llm import transform_text as transform_text
 from langjoin.transformers.transform_mock import transform_text as transform_text_mock
 
 def main() -> int:
-    transformer = lambda text: transform_text_mock(text, "pt", ["verb", "noun", "adjective"], 0.7)
-    transform_epub("static/epub/monkey.epub", 5, transformer)
+    transformer = lambda text: transform_text_llm(text, "pt", ["verb", "noun", "adjective", "adverb", "pronoun"], 0.5)
+    transform_epub("static/epub/monkey.epub", 0, transformer)
     return 0

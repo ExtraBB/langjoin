@@ -17,7 +17,7 @@ def transform_epub(path: str, max_paragraphs: int, transformer: Callable[[str], 
     
     # Iterate through each text file in the EPUB
     for text_id in book.get_texts():
-        if paragraphs_transformed >= max_paragraphs:
+        if max_paragraphs > 0 and paragraphs_transformed >= max_paragraphs:
             break
         
         soup = book.read_file(text_id, soup=True)
@@ -48,7 +48,7 @@ def transform_epub(path: str, max_paragraphs: int, transformer: Callable[[str], 
             paragraph_info["original"].replace_with(BeautifulSoup(paragraph_info["transformed_outer_html"], 'html.parser'))
 
             paragraphs_transformed += 1
-            if paragraphs_transformed >= max_paragraphs:
+            if max_paragraphs > 0 and paragraphs_transformed >= max_paragraphs:
                 break
         
         # Update file in book

@@ -2,28 +2,26 @@ import getpass
 import json
 import os
 from typing import List
-from langchain_openai import ChatOpenAI
+from openai import OpenAI
+client = OpenAI()
+
 
 if not os.environ.get("OPENAI_API_KEY"):
     os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
-    
-llm = ChatOpenAI(
-    model="gpt-4o",
-    temperature=0,
-    max_tokens=None,
-    timeout=None,
-    max_retries=2
-)
 
 def transform_text(text: str, lang: str, word_types: List[str], strength: float) -> str:
-  messages = [
-    (
-        "system",
-        get_diglot_system_prompt(),
-    ),
-    ("human", get_diglot_user_prompt(text, lang, word_types, strength)),
-  ]
-  return llm.invoke(messages).content
+  completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": get_diglot_system_prompt()},
+        {
+            "role": "user",
+            "content": get_diglot_user_prompt(text, lang, word_types, strength)
+        }
+    ]
+  )
+  
+  return completion.choices[0].message.content
 
 def get_diglot_system_prompt():
     return """
