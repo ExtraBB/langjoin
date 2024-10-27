@@ -1,5 +1,5 @@
 import random
-from typing import Callable, List
+from typing import List
 import spacy
 from translate import Translator
 

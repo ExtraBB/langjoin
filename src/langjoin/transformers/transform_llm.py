@@ -35,6 +35,7 @@ Some tips on performing Diglot Weave effectively:
 - If you replace a word, make sure to make it grammatically correct.
 - If you replace a word, make sure to replace it in all instances it occurs.
 - If you replace a noun, also replace its article.
+- If you encounter any HTML tags, leave them as-is.
 
 You will be presented with JSON input with the following schema:
 ```
